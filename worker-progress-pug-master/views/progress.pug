@@ -1,0 +1,174 @@
+//- views/progress.pug
+doctype html
+html
+  head
+    meta(charset="utf-8")
+    title Worker Progress Report
+    link(rel="stylesheet", href="/css/style.css")
+  body
+
+    //- -------------------- Page 1 --------------------
+    .page
+      // Header
+      header
+        h1 Worker Progress Report
+        .meta
+          span #{data.worker.reportDate}
+          |   |  Claim No. #{data.worker.claimNo}  |  WP
+
+      // Section 1: Updates
+      .section
+        h3
+          span.name-text #{data.worker.name}
+          |  provided the following updates in relation to their claim:
+        .section-box
+          p #{data.recovery.comments}
+
+      // Section 2: Return to work
+      .section
+        h3 Return to work
+        .section-box
+          .option I have not missed time from work
+          .option I have not returned to work
+          .option I returned to work on: #{data.returnToWork.date}
+
+      // Section 3: Expected return
+      .section
+        h3 I expect to return to work on
+        .section-box
+          .option Date: #{data.returnToWork.expectedReturn}
+
+      // Section 4: Concerns
+      .section
+        h3 I have the following concerns about returning to work
+        .section-box
+          .option #{data.returnToWork.concerns}
+
+      // Section 5: Employer contact
+      .section
+        h3 Employer contact
+        .section-box
+          .option Name: #{data.returnToWork.contact.name}
+          .option Date: #{data.returnToWork.contact.date}
+
+      // Section 6: Recovery status
+      .section
+        h3 Recovery status
+        .section-box
+          if data.recovery.fullyRecovered
+            .option I have fully recovered from my workplace injury.
+          else
+            .option I have not fully recovered from my workplace injury.
+          .option Comments: #{data.recovery.comments}
+
+      // Footer
+      .footer
+        | Submitted: #{data.worker.submitted}   Worker App ID: #{data.worker.appId}   Page 1 of 3
+
+    //- -------------------- Page 2 --------------------
+    .page
+      // Header (repeat)
+      header
+        h1 Worker Progress Report
+        .meta
+          span #{data.worker.reportDate}
+
+      // Section 7: Return-to-work progress
+      .section
+        h3 My return to work is going
+        .section-box
+          .option #{data.returnToWork.progress || 'No update provided.'}
+
+      // Section 8: Recovery narrative
+      .section
+        h3 Recovery update
+        .section-box
+          .option #{data.recovery.comments}
+
+      // Section 9: Claim update summary
+      .section
+        h3 Claim update summary
+        .section-box
+          .option Return to Work: #{data.returnToWork.status || '—'}
+
+      // Section 10: Contact info
+      .section
+        h3 Contact information
+        .section-box
+          .option 333 Broadway, Winnipeg, MB R3C 4W3
+          .option Phone: (204) 954‑4321
+          .option Toll Free: 1‑855‑954‑4321
+          .option wcb.mb.ca
+
+      // Section 11: Pain rating
+      .section
+        h3 I rate my current pain/discomfort (1 = no pain, 10 = severe)
+        .section-box
+          each num in [1,2,3,4,5,6,7,8,9,10]
+            .option #{num}
+
+      // Section 12: Medical treatment status
+      .section
+        h3 Medical treatment
+        .section-box
+          if data.medicalTreatment.ongoing
+            .option I am continuing to receive medical treatment from: #{data.medicalTreatment.providerType}
+          else
+            .option I am not continuing to receive medical treatment.
+
+      // Section 13: Last treatments
+      .section
+        h3 Last medical treatments
+        .section-box
+          each t in data.medicalTreatment.lastTreatments
+            .option #{t.date} – #{t.name}
+
+      // Section 14: Home exercises
+      .section
+        h3 Home exercises
+        .section-box
+          if data.homeExercises.doing
+            .option I am doing home exercises.
+            each ex in data.homeExercises.list
+              .option #{ex}
+          else
+            .option I am not doing home exercises.
+
+      // Footer
+      .footer
+        | Submitted: #{data.worker.submitted}   Worker App ID: #{data.worker.appId}   Page 2 of 3
+
+    //- -------------------- Page 3 --------------------
+    .page
+      // Header (repeat)
+      header
+        h1 Worker Progress Report
+        .meta
+          span #{data.worker.reportDate}
+
+      // Section 15: Medication
+      .section
+        h3 Medication
+        .section-box
+          if data.medication.taking
+            .option I am taking medication: #{data.medication.name}
+            .option My next medical treatment is: #{data.medication.nextTreatment}
+          else
+            .option I am not taking medication for my workplace injury.
+
+      // Section 16: Certification
+      .section
+        h3 Certification
+        .section-box
+          p I certify that the information given on this form is true, correct and complete to the best of my knowledge. I agree to notify the Workers Compensation Board of Manitoba (WCB) immediately once I return to any form of work and/or employment. I understand that it is an offence to knowingly make a false statement to the WCB. I also understand that it is an offence to withhold information from WCB which affects my entitlement to compensation (e.g., full or partial recovery from injury, ability to return to work, sources of additional income, etc.). I understand that refusing to co‑operate with, or follow my treatment, may result in the WCB reducing or suspending my benefits.
+
+      // Section 17: Privacy Notice
+      .section
+        h3 Privacy Notice
+        .section-box
+          span ☑️
+          span I understand that the Privacy Notice applies to the personal information collected in this document.
+
+      // Footer
+      .footer
+        | Submitted: #{data.worker.submitted}   Worker App ID: #{data.worker.appId}   Page 3 of 3
